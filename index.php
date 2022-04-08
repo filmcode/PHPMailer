@@ -1,32 +1,12 @@
 <?php
-    //check if form was sent
-    if($_POST){
-        $to = 'gjaimes@galletamkt.com';
-        
-        $name = $_POST['name'];
-        $mail = $_POST['mail'];
-        $phone = $_POST['phone'];
-        $marca = $_POST['marca'];
-        $modelo = $_POST['modelo'];
-        $km = $_POST['km'];
-        $ano = $_POST['ano'];
-        $foto1 = $_POST['foto1'];
-
-        $mensaje = $_POST['mensaje'];
-        $subject = "Nueva Reservacion";
-        $contenido = "Este mensaje fue enviado por: " . $name ."\nE-mail: " . $mail . "\nTelefono: " . $phone .  "\nmarca: " . $marca . "\nModelo: " . $modelo."\nKm Recorridos: " . $km."\nMensaje: " .$mensaje."\nFoto 1: " .$foto1;
-        //honey pot field
-        $honeypot = $_POST['firstname'];
-        //check if the honeypot field is filled out. If not, send a mail.
-        if( ! empty( $honeypot ) ){
-            return; //you may add code here to echo an error etc.
-        }else{
-        
-            mail( $to, $subject, $contenido);
+    if(isset($_POST['mail'])) {
+        if (!empty($_POST['mail'])) {
+            require_once 'php/Mail.php';
+        }else {
             echo'<script type="text/javascript">
-        alert("Formulario enviado correctamente, Gracias por tu solicitud, tu reservación será confirmada vía telefónica.");
-        window.location.href="index.php";
-        </script>';
+            alert("Debes todos llenar los campos.");
+            window.location.href="index.php";
+            </script>';
         }
     }
 ?>
@@ -43,7 +23,6 @@
     <link rel="icon" href="image/favicon.png">
 </head>
 <body>
-
     <!-- Botones Burbuja -->
     <a href="https://api.whatsapp.com/send?phone=+523310430677" class="btn-wsp uk-flex uk-flex-middle uk-flex-center" target="_blank">
         <i class="fa fa-whatsapp icono"></i>
@@ -64,7 +43,7 @@
             </div>
             <div class="uk-width-expand@m">
                 <div class="uk-card" style="margin: 0 0 2em 0">
-                    <form class="form" name="formulario" action="#my-form" method="post" id="my-form">
+                    <form class="form" name="formulario" action="#my-form" method="post" id="my-form" enctype="multipart/form-data">
                         <fieldset class="uk-fieldset">
                     
                             <h5 style="color: #2042a6;font-size: 1.25rem;">Llena este formulario con la información solicitada y nuestro especialista en seminuevos se pondrá en contacto contigo para brindarte una oferta por tu auto.</h5>
@@ -117,25 +96,9 @@
                             </div>
 
                             <h5 style="color: #2042a6;font-size: 1.25rem;">Sube imagenes de tu auto, para brindarte un mejor servicio.</h5>
-                            <label for="foto1" class="uk-flex uk-flex-between" style="font-size: 1.2em;color: black; padding: .4em 0">Foto 1</label>
+                            <label for="foto1" class="uk-flex uk-flex-between" style="font-size: 1.2em;color: black; padding: .4em 0">Cargar Imagenes</label>
                             <div class="uk-flex uk-flex-left">
-                                <input type="file" name="foto1" style="font-size: 1em" name="foto1" size="40" accept=".JPG,.PNG">
-                            </div>
-                            <label for="foto2" class="uk-flex uk-flex-between" style="font-size: 1.2em;color: black; padding: .4em 0">Foto 2</label>
-                            <div class="uk-flex uk-flex-left">
-                                <input type="file" name="foto2" style="font-size: 1em" name="foto2" size="40" accept=".JPG,.PNG">
-                            </div>
-                            <label for="foto3" class="uk-flex uk-flex-between" style="font-size: 1.2em;color: black; padding: .4em 0">Foto 3</label>
-                            <div class="uk-flex uk-flex-left">
-                                <input type="file" name="foto3" style="font-size: 1em" name="foto3" size="40" accept=".JPG,.PNG">
-                            </div>
-                            <label for="foto4" class="uk-flex uk-flex-between" style="font-size: 1.2em;color: black; padding: .4em 0">Foto 4</label>
-                            <div class="uk-flex uk-flex-left">
-                                <input type="file" name="foto4" style="font-size: 1em" name="foto4" size="40" accept=".JPG,.PNG">
-                            </div>
-                            <label for="foto5" class="uk-flex uk-flex-between" style="font-size: 1.2em;color: black; padding: .4em 0">Foto 5</label>
-                            <div class="uk-flex uk-flex-left">
-                                <input type="file" name="foto5" style="font-size: 1em" name="foto5" size="40" accept=".JPG,.PNG">
+                                <input type="file" name="files[]" style="font-size: 1em" size="40" accept=".JPG,.PNG" multiple>
                             </div>
 
                             <div class="uk-margin-remove">
